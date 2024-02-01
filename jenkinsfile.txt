@@ -14,7 +14,7 @@ pipeline {
                 script{
                     dir("terraform")
                     {
-                    git "git@github.com:rajshekar261/DevOpstasks/task2.git"
+                    git "git@github.com:rajshekar261/DevOpstasks.git"
                     }
                 }
             }
