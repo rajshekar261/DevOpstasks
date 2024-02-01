@@ -33,6 +33,7 @@ pipeline {
                 equals expected: true, actual: params.autoApprove
                 }
             }
+        }
     stage{
         script {
             def plan = readFile 'terraform/tfplan.txt'
@@ -40,7 +41,6 @@ pipeline {
             parameters: [text(name: 'Plan',description: 'Please review the plan', defaultValue: plan)]
                 }
             }
-        }
 
 
         stage('Apply') {
