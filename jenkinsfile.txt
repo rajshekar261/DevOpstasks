@@ -23,12 +23,18 @@
         }
 
     stage('Terraform Init') {
-        steps {
-              
-            script {
-                    // sh 'rm -rf .terraform*'
-                    // sh 'rm -rf terraform*'
-                    sh 'terraform init'
+            steps {
+                script {
+                    sh 'terraform init -get-plugins=false'
+                }
+            }
+        }
+
+        stage('Manually Install Plugins') {
+            steps {
+                script {
+                    sh 'terraform providers schema -json > schema.json'
+                    sh 'terraform providers mirror -source=terraform-providers/ -destination=.terraform/plugins'
                 }
             }
         }
