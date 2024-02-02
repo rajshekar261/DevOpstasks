@@ -18,23 +18,14 @@
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                git branch: 'main', url: 'https://github.com/rajshekar261/DevOpstasks.git'
             }
         }
 
     stage('Terraform Init') {
             steps {
                 script {
-                    sh 'terraform init -get-plugins=false'
-                }
-            }
-        }
-
-        stage('Manually Install Plugins') {
-            steps {
-                script {
-                    sh 'terraform providers schema -json > schema.json'
-                    sh 'terraform providers mirror -source=terraform-providers/ -destination=.terraform/plugins'
+                    sh 'terraform init'
                 }
             }
         }
@@ -42,7 +33,7 @@
         stage('Terraform Plan') {
             steps {
                 script {
-                    sh 'terraform plan -input=false -lock=false -out=tfplan'
+                    sh 'terraform plan'
                 }
             }
         }
@@ -51,7 +42,7 @@
             steps {
                 script {
                     if(params.action == 'apply'){
-                        sh 'terraform apply -auto-approve tfplan'
+                        sh 'terraform apply -auto-approve'
                     } else {
                         sh 'terraform destroy -auto-approve'
                     }
