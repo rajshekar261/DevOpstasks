@@ -33,28 +33,23 @@
             }
         }
 
-        
-
-    stage('Terraform Plan') {
-        steps {
-               
-            script {
-                    sh 'terraform plan'
+        stage('Terraform Plan') {
+            steps {
+                script {
+                    sh 'terraform plan -input=false -lock=false -out=tfplan'
                 }
             }
         }
-    
-    
 
-    stage('Terraform Apply') {
-        steps {
-            script {
-                if(params.action == 'apply'){
-                    sh 'terraform apply -auto-approve'
-                } else {
-                    sh 'terraform destroy -auto-approve'
+        stage('Terraform Apply/Destroy') {
+            steps {
+                script {
+                    if(params.action == 'apply'){
+                        sh 'terraform apply -auto-approve tfplan'
+                    } else {
+                        sh 'terraform destroy -auto-approve'
+                    }
                 }
-            }
             }
         }
     }
